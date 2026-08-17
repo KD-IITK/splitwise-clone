@@ -9,7 +9,7 @@
 7. If A owes B ₹x and A pays B ₹y where y > x, then B owes A ₹y - x.
 8. In the balance view, relationships with a balance of ₹0 are not displayed.
 9. In case of an equal split, the total expense is divided equally among all selected participants.
-10. Each participant's final share is stored with exactly 2 decimal places.
+10. All monetary values are stored as integer paise. User-facing monetary values are displayed with two decimal places. Eg: 100 will be stored as 10000 as will be shown as 100.00, and 10.50 will be stored as 1050 and shown as 10.50
 11. The sum of all participant shares must always equal the total expense amount.
 12. If equal splitting produces a rounding remainder, the remainder is assigned to exactly one participant. If the payer is a participant, the remainder is assigned to the payer. Otherwise, it is assigned according to a predefined deterministic rule.
 
@@ -52,4 +52,8 @@
 40. The system should limit the number of OTP requests that can be made within a defined time period to prevent abuse.
 41. If a user attempts to access an invitation using an email address different from the invited email address, the system must not reveal any group information and must not allow the invitation to be accepted.
 42. An expense can only include participants who are members of the group.
-43. A user cannot invite their own email address to a group.
+43. A user cannot invite their own email address to a group.  
+
+---
+
+44. The payer and receiver of a settlement must be different users.
