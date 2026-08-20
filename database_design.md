@@ -67,6 +67,18 @@ Represents an invitation to join a group.
 * Expiration date
 * Status
 
+### 8. OTP Verification
+
+Represents a temporary OTP issued to authenticate a user's email address.
+
+* OTP Verification ID
+* Email
+* OTP hash
+* Expiration time
+* Number of failed verification attempts
+* Blocked until
+* Creation time
+* Verification time
 ---
 ## Relationships
 
@@ -112,6 +124,10 @@ Represents an invitation to join a group.
 * A user can send many invitations.
 * Each invitation has exactly one inviter.
 
+### Email → OTP Verification
+* An email address can have multiple OTP verification records over time.
+* Each OTP verification record belongs to exactly one email address.
+* OTP verification is performed against the email address used when the OTP was requested.
 ---
 
 ## Attributes
@@ -159,6 +175,15 @@ Represents an invitation to join a group.
 * expiration_date
 * status → Pending / Accepted
 
+### OTP Verification
+* PK otp_id
+* email_id
+* otp_hash
+* expires_at
+* failed_attempts
+* blocked_until
+* created_at
+* verified_at
 ---
 ## Data Types
 
@@ -220,6 +245,15 @@ Examples:
 * `status` → VARCHAR
 * `created_at` → TIMESTAMPTZ
 
+### OTP Verification
+* `otp_id` → UUID
+* `email_id` → VARCHAR
+* `otp_hash` → VARCHAR
+* `expires_at` → TIMESTAMPTZ
+* `failed_attempts` → INTEGER
+* `blocked_until` → TIMESTAMPTZ
+* `created_at` → TIMESTAMPTZ
+* `verified_at` → TIMESTAMPTZ
 ---
 ## Constraints
 
@@ -274,6 +308,16 @@ Examples:
 * `expiration_date` cannot be null.
 * `status` must be either `PENDING` or `ACCEPTED`.
 
+### OTP Verification
+
+* `otp_id` is the primary key.
+* `email_id` cannot be null.
+* `otp_hash` cannot be null.
+* `expires_at` cannot be null.
+* `failed_attempts` cannot be null.
+* `failed_attempts` must be greater than or equal to 0.
+* `created_at` cannot be null.
+* `verified_at` is null until the OTP is successfully verified.
 ---
 ## Indexes
 
@@ -289,3 +333,6 @@ Examples:
 
 ### Invitation
 * Index on `recipient_email` to efficiently find invitations for an email address.
+
+### OTP Verification
+* Index on `email_id` to efficiently find OTP verification records for an email address.

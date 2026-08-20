@@ -108,6 +108,21 @@ CREATE TABLE invitations (
     CHECK (status IN ('PENDING', 'ACCEPTED'))
 );
 
+CREATE TABLE otp_verifications (
+    otp_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    email_id VARCHAR NOT NULL,
+    otp_hash VARCHAR NOT NULL,
+
+    expires_at TIMESTAMPTZ NOT NULL,
+
+    failed_attempts INTEGER NOT NULL DEFAULT 0,
+    blocked_until TIMESTAMPTZ,
+
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    verified_at TIMESTAMPTZ
+);
+
 CREATE INDEX idx_group_memberships_group_id
 ON group_memberships(group_id);
 
@@ -119,3 +134,6 @@ ON settlements(group_id);
 
 CREATE INDEX idx_invitations_recipient_email
 ON invitations(recipient_email);
+
+CREATE INDEX idx_otp_verifications_email_id
+ON otp_verifications(email_id);

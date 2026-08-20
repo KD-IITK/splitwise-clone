@@ -46,6 +46,7 @@
 34. An OTP is valid for 1 minute and consists of 6 numeric digits
 35. If an OTP expires, the user can request a new OTP.
 36. A user can make a maximum of 5 incorrect OTP verification attempts. After 5 incorrect attempts, OTP verification is blocked for 5 minutes.
+36. If OTP verification is blocked due to reaching the maximum number of incorrect attempts, the user cannot request or verify another OTP until the 5-minute block expires.
 37. A user can request a new OTP only after the currently active OTP has expired.
 38. When a new OTP is generated, the previous OTP becomes invalid and cannot be used.
 39. A successfully verified OTP can only be used once and becomes invalid immediately after successful verification.
