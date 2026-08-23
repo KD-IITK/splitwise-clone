@@ -79,6 +79,16 @@ Represents a temporary OTP issued to authenticate a user's email address.
 * Blocked until
 * Creation time
 * Verification time
+
+### 9. Session
+Represents a logged in user's active state.
+
+* session id
+* user
+* expires at
+* created at
+* revoked at
+
 ---
 ## Relationships
 
@@ -128,6 +138,9 @@ Represents a temporary OTP issued to authenticate a user's email address.
 * An email address can have multiple OTP verification records over time.
 * Each OTP verification record belongs to exactly one email address.
 * OTP verification is performed against the email address used when the OTP was requested.
+
+### User → Session
+* A user can have multiple active session (like on multiple devices)
 ---
 
 ## Attributes
@@ -184,6 +197,13 @@ Represents a temporary OTP issued to authenticate a user's email address.
 * blocked_until
 * created_at
 * verified_at
+
+### Session
+* PK session_id
+* FK 
+* expires_at
+* created_at
+* revoked_at
 ---
 ## Data Types
 
@@ -254,6 +274,14 @@ Examples:
 * `blocked_until` → TIMESTAMPTZ
 * `created_at` → TIMESTAMPTZ
 * `verified_at` → TIMESTAMPTZ
+
+### Session
+* `session_id` → UUID
+* `user_id` → UUID
+* `expires_at` → TIMESTAMPTZ
+* `created_at` → TIMESTAMPTZ
+* `revoked_at` → TIMESTAMPTZ
+
 ---
 ## Constraints
 
@@ -318,6 +346,14 @@ Examples:
 * `failed_attempts` must be greater than or equal to 0.
 * `created_at` cannot be null.
 * `verified_at` is null until the OTP is successfully verified.
+
+### Session
+
+* `session_id` is the primary key.
+* `user_id` cannot be null.
+* `expires_at` cannot be null.
+* `created_at` cannot be null.
+* `revoked_at` is null while the session is active
 ---
 ## Indexes
 
