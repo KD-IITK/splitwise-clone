@@ -73,17 +73,11 @@ CREATE TABLE settlements (
     receiver_id UUID NOT NULL,
 
     amount BIGINT NOT NULL,
-
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
     FOREIGN KEY (group_id) REFERENCES groups(group_id),
-
     FOREIGN KEY (payer_id) REFERENCES users(user_id),
-
     FOREIGN KEY (receiver_id) REFERENCES users(user_id),
-
     CHECK (amount > 0),
-
     CHECK (payer_id <> receiver_id)
 );
 
@@ -92,19 +86,14 @@ CREATE TABLE invitations (
 
     group_id UUID NOT NULL,
     inviter_id UUID NOT NULL,
-
     recipient_email VARCHAR NOT NULL,
-
     expiration_date TIMESTAMPTZ NOT NULL,
 
     status VARCHAR NOT NULL DEFAULT 'PENDING',
-
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     FOREIGN KEY (group_id) REFERENCES groups(group_id),
-
     FOREIGN KEY (inviter_id) REFERENCES users(user_id),
-
     CHECK (status IN ('PENDING', 'ACCEPTED'))
 );
 
@@ -115,12 +104,20 @@ CREATE TABLE otp_verifications (
     otp_hash VARCHAR NOT NULL,
 
     expires_at TIMESTAMPTZ NOT NULL,
-
     failed_attempts INTEGER NOT NULL DEFAULT 0,
     blocked_until TIMESTAMPTZ,
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     verified_at TIMESTAMPTZ
+);
+
+CREATE TABLE sessions (
+    session_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL,
+    expires_at TIMESTAMPTZ NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    revoked_at TIMESTAMPTZ,
+    FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
 CREATE INDEX idx_group_memberships_group_id
@@ -137,3 +134,9 @@ ON invitations(recipient_email);
 
 CREATE INDEX idx_otp_verifications_email_id
 ON otp_verifications(email_id);
+
+CREATE INDEX idx_sessions_user_id
+ON sessions(user_id);
+
+CREATE INDEX idx_sessions_session_id
+ON sessions(session_id);
