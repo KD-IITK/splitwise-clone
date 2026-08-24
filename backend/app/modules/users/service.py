@@ -3,7 +3,7 @@ from psycopg.errors import UniqueViolation
 
 from app.db import get_connection
 from app.modules.users.schemas import UserCreate
-
+from uuid import UUID
 
 def create_user(user: UserCreate):
     connection = get_connection()
@@ -109,6 +109,31 @@ def create_user_from_email(email_id: str):
             "email_id": row[1],
             "created_at": row[2]
         }
+    finally:
+        cursor.close()
+        connection.close()
+
+def get_user_email(user_id: UUID):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    try:
+        cursor.execute(
+            """
+            SELECT email_id
+            FROM users
+            WHERE user_id = %s;
+            """,
+            (user_id,)
+        )
+
+        row = cursor.fetchone()
+
+        if row is None:
+            return None
+
+        return row[0]
+
     finally:
         cursor.close()
         connection.close()

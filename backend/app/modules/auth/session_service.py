@@ -67,9 +67,7 @@ def get_user_id_from_session(session_id: uuid):
         row = cursor.fetchone()
         if row is None:
             return None
-        return {
-            row
-        }
+        return row[0]
     finally:
         cursor.close()
         connection.close()
