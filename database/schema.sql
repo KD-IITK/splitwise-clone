@@ -58,7 +58,7 @@ CREATE TABLE expense_participants (
 
     PRIMARY KEY (expense_id, user_id),
 
-    FOREIGN KEY (expense_id) REFERENCES expenses(expense_id),
+    FOREIGN KEY (expense_id) REFERENCES expenses(expense_id) ON DELETE CASCADE,
 
     FOREIGN KEY (user_id) REFERENCES users(user_id),
 

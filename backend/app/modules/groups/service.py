@@ -147,3 +147,45 @@ def get_group_details(group_id: UUID, user_id: UUID):
     finally:
         cursor.close()
         connection.close()
+
+def is_group_member(group_id: UUID, user_id: UUID) -> bool:
+    connection = get_connection()
+    cursor = connection.cursor()
+    try:
+        cursor.execute(
+            """
+                SELECT 1
+                FROM group_memberships
+                WHERE group_id = %s
+                AND user_id = %s;
+            """,
+                (group_id, user_id)
+        )
+
+        if cursor.fetchone() is None:
+            return False
+
+        return True
+    finally:
+        cursor.close()
+        connection.close()
+
+def get_group_member_ids(group_id: UUID) -> set[UUID]:
+    connection = get_connection()
+    cursor = connection.cursor()
+    try:
+        cursor.execute(
+            """
+                SELECT user_id
+                FROM group_memberships
+                WHERE group_id = %s;
+            """,
+            (group_id,)
+        )
+
+        rows = cursor.fetchall()
+        return {row[0] for row in rows}
+    finally:
+        cursor.close()
+        connection.close()
+
