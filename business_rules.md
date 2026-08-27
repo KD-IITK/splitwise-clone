@@ -58,3 +58,38 @@
 ---
 
 44. The payer and receiver of a settlement must be different users.
+
+### Balance Convention
+
+A user's balance represents their net financial position in the group.
+
+- Positive balance → the user is owed money.
+- Negative balance → the user owes money.
+- Zero balance → the user is settled.
+
+The sum of all user balances in a group must always equal zero.
+
+### Settlement Business Rules
+
+- A settlement belongs to exactly one group.
+- The payer must be a member of the group.
+- The receiver must be a member of the group.
+- The payer and receiver must be different users.
+- The settlement amount must be greater than 0.
+- A settlement represents an actual payment between two group members.
+- Settlements affect the calculated group balances.
+- Settlements do not directly modify expense records.
+- Group balances are derived from expenses and settlements.
+
+### Debt Calculation
+
+The system supports two debt representations:
+
+1. Pairwise debts
+   - Represents the net debt relationship between each pair of users.
+   - Opposite debts between two users are netted.
+
+2. Simplified debts
+   - Uses the final group balances.
+   - Produces a reduced set of payment recommendations.
+   - These recommendations are not automatically recorded as settlements.

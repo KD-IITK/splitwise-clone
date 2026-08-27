@@ -5,6 +5,7 @@ from app.modules.auth.routes import router as auth_router
 from app.modules.groups.routes import router as groups_router
 from app.modules.invitations.routes import router as invitations_router
 from app.modules.expenses.routes import router as expenses_router
+from app.modules.settlements.routes import router as settlements_router
 
 app = FastAPI()
 
@@ -14,6 +15,7 @@ app.include_router(auth_router)
 app.include_router(groups_router)
 app.include_router(invitations_router)
 app.include_router(expenses_router)
+app.include_router(settlements_router)
 
 @app.get("/")
 def root():
